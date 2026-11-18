@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Build Me Up Mark</title>
+  <meta name="description" content="Build Me Up Mark (TriForm): Lean, Cut or Buffed training plans with faceless exercise animations, benchmark WODs, home ladders and cardio protocols. Works offline.">
+  <meta name="theme-color" content="#0f172a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Build Me Up">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    /* The appearance chosen on this device (light unless set otherwise) goes on before the first paint,
+       so a dark page never flashes light. The key matches Storage_.THEME_KEY in js/storage.js. */
+    (function () {
+      var mode = 'light';
+      try { mode = localStorage.getItem('bmum-theme') || 'light'; } catch (e) {}
+      var dark = mode === 'dark' || (mode === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    })();
+  </script>
+</head>
+<body>
+  <!-- Header: brand, appearance toggle, and the tab bar. Tabs are rendered into the <main> sections by js/app*.js. -->
+  <header class="app-header">
+    <div class="app-title">
+      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true"><path class="logo-tri" d="M32 6 L58 54 L6 54 Z"/><path class="logo-bar" d="M16 36h32M20 30v12M44 30v12M24 32v8h16v-8z"/></svg>
+      <h1>Build Me Up Mark <span class="subtitle">TriForm</span></h1>
+      <button class="theme-btn" data-action="cycle-theme" title="Appearance. Tap to change.">Light</button>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab-btn active" data-tab="today" role="tab"><span class="tab-ico">&#9679;</span>Today</button>
+      <button class="tab-btn" data-tab="workout" role="tab"><span class="tab-ico">&#9654;</span>Workout</button>
+      <button class="tab-btn" data-tab="library" role="tab"><span class="tab-ico">&#9636;</span>Library</button>
+      <button class="tab-btn" data-tab="plans" role="tab"><span class="tab-ico">&#9776;</span>Plans</button>
+      <button class="tab-btn" data-tab="progress" role="tab"><span class="tab-ico">&#9650;</span>Progress</button>
+      <button class="tab-btn" data-tab="coach" role="tab"><span class="tab-ico">&#9733;</span>Coach</button>
+      <button class="tab-btn" data-tab="settings" role="tab"><span class="tab-ico">&#9881;</span>Settings</button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="tab-today" class="tab active" role="tabpanel"></section>
+    <section id="tab-workout" class="tab" role="tabpanel"></section>
+    <section id="tab-library" class="tab" role="tabpanel"></section>
+    <section id="tab-plans" class="tab" role="tabpanel"></section>
+    <section id="tab-progress" class="tab" role="tabpanel"></section>
+    <section id="tab-coach" class="tab" role="tabpanel"></section>
+    <section id="tab-settings" class="tab" role="tabpanel"></section>
+  </main>
+
+  <footer class="app-footer">
+    <span>Build Me Up Mark &middot; TriForm</span>
+    <span class="credits">Animations: <a href="https://github.com/bryllim/workout-guide" rel="nofollow">Workout Guide</a> (CC BY-SA 4.0) &middot; Exercise data by <a href="https://repdb.co" rel="nofollow">RepDB (repdb.co)</a></span>
+  </footer>
+
+  <!-- Modal dialogs, the full-screen timer and toasts are rendered into these roots. -->
+  <div id="modal-root"></div>
+  <div id="timer-root"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Data (static content), then storage, media and the engine, then the UI modules, then the boot in app.js. -->
+  <script src="js/data/taxonomy.js"></script>
+  <script src="js/data/media.js"></script>
+  <script src="js/data/exercises-1.js"></script>
+  <script src="js/data/exercises-2.js"></script>
+  <script src="js/data/exercises-3.js"></script>
+  <script src="js/data/exercises-4.js"></script>
+  <script src="js/data/exercises.js"></script>
+  <script src="js/data/programs.js"></script>
+  <script src="js/data/wods.js"></script>
+  <script src="js/data/ladders.js"></script>
+  <script src="js/data/cardio.js"></script>
+  <script src="js/data/champions.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/media.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/app-workout.js"></script>
+  <script src="js/app-library.js"></script>
+  <script src="js/app-plans.js"></script>
+  <script src="js/app-progress.js"></script>
+  <script src="js/app-coach.js"></script>
+  <script src="js/app-settings.js"></script>
+</body>
+</html>
