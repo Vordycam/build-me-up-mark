@@ -37,11 +37,10 @@
     var head = A.h('<div class="wk-head"><div class="row between"><div><span class="badge accent">' + (w.free ? 'Free session' : 'Week ' + w.week + (w.deload ? ' · deload' : '')) + '</span><h2>' + A.esc(w.dayName) + '</h2></div><div class="stat"><span class="v" id="wk-clock">' + elapsedLabel(w) + '</span><span class="l">elapsed</span></div></div></div>');
     el.appendChild(head);
     if (w.deload) el.appendChild(A.h('<div class="card flat small muted">Deload week: sets are halved. Move well, leave the gym fresh.</div>'));
-    var firstOpen = -1;
+    /* the first unfinished exercise block is "current": it animates and is highlighted (lists do not count) */
+    var firstOpen = currentBlockIndex(w);
     w.blocks.forEach(function (b, i) {
-      var done = blockDone(b);
-      if (!done && firstOpen < 0) firstOpen = i;
-      el.appendChild(renderBlock(w, b, i, !done && firstOpen === i));
+      el.appendChild(renderBlock(w, b, i, firstOpen === i));
     });
     el.appendChild(A.h('<div class="sticky-actions"><div class="finish-bar"><button class="btn primary lg" data-action="finish-workout">Finish workout</button><button class="btn danger" data-action="abandon-workout">Abandon</button></div></div>'));
     clearInterval(A._wkClock);
@@ -52,6 +51,14 @@
     if (b.kind === 'warmup' || b.kind === 'cooldown') return b.items.every(function (it) { return it.done; });
     if (b.sets) return b.sets.every(function (s) { return s.done; });
     return !!b.result;
+  }
+  function currentBlockIndex(w) {
+    for (var i = 0; i < w.blocks.length; i++) {
+      var b = w.blocks[i];
+      if (b.kind === 'warmup' || b.kind === 'cooldown') continue;
+      if (!blockDone(b)) return i;
+    }
+    return -1;
   }
 
   /* the coaching panel shown under every exercise */
@@ -183,8 +190,7 @@
     var w = A.activeWorkout(); if (!w) return;
     var old = document.querySelector('[data-block="' + i + '"]'); if (!old) return A.render('workout');
     if (old._player) { old._player.destroy(); A.players = A.players.filter(function (p) { return p !== old._player; }); }
-    var firstOpen = -1; w.blocks.forEach(function (bb, k) { if (!blockDone(bb) && firstOpen < 0) firstOpen = k; });
-    var fresh = renderBlock(w, w.blocks[i], i, firstOpen === i);
+    var fresh = renderBlock(w, w.blocks[i], i, currentBlockIndex(w) === i);
     old.replaceWith(fresh);
   }
 
